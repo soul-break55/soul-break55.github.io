@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Soul — Roblox Animator</title>
+<meta name="description" content="Soul — experienced all-around Roblox animator. Combat, emotes, cutscenes and more.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Sora:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#081113;
+    --bg-panel:#0c181b;
+    --line:#12363a;
+    --teal:#1ce8cf;
+    --teal-soft:#8fd8ce;
+    --text:#e6f2ef;
+    --muted:#7fa09b;
+    --glow:rgba(28,232,207,.14);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Sora',sans-serif;
+    font-weight:300;
+    line-height:1.7;
+    overflow-x:hidden;
+  }
+
+  /* ---------- background lights ---------- */
+  .lights{position:fixed;inset:0;z-index:-1;pointer-events:none}
+  .lights::before,
+  .lights::after,
+  .lights .orb{
+    content:"";
+    position:absolute;
+    border-radius:50%;
+    filter:blur(90px);
+  }
+  .lights::before{
+    width:560px;height:560px;top:-180px;right:-140px;
+    background:radial-gradient(circle, rgba(28,232,207,.22), transparent 65%);
+  }
+  .lights::after{
+    width:640px;height:640px;bottom:-260px;left:-220px;
+    background:radial-gradient(circle, rgba(28,232,207,.13), transparent 65%);
+  }
+  .lights .orb{
+    width:420px;height:420px;top:44%;left:58%;
+    background:radial-gradient(circle, rgba(28,232,207,.08), transparent 70%);
+  }
+
+  .wrap{max-width:980px;margin:0 auto;padding:0 24px}
+
+  /* ---------- hero ---------- */
+  header{padding:96px 0 72px}
+  .hero{
+    display:grid;
+    grid-template-columns:minmax(0,5fr) minmax(0,6fr);
+    gap:48px;
+    align-items:center;
+  }
+  .hero-copy{opacity:0;transform:translateY(14px);animation:rise .8s ease .1s forwards}
+  .hero-media{opacity:0;transform:translateY(14px);animation:rise .8s ease .3s forwards}
+  @keyframes rise{to{opacity:1;transform:none}}
+
+  .alias{
+    font-family:'Chakra Petch',sans-serif;
+    font-weight:700;
+    font-size:clamp(3.4rem, 9vw, 5.6rem);
+    line-height:1;
+    letter-spacing:.02em;
+    color:var(--text);
+    text-shadow:0 0 34px var(--glow), 0 0 90px var(--glow);
+  }
+  .tagline{
+    margin-top:18px;
+    font-size:1.15rem;
+    color:var(--teal-soft);
+    max-width:26ch;
+  }
+  .hero-actions{margin-top:34px;display:flex;gap:14px;flex-wrap:wrap}
+  .btn{
+    font-family:'Chakra Petch',sans-serif;
+    font-weight:600;
+    font-size:.95rem;
+    padding:12px 22px;
+    border-radius:8px;
+    cursor:pointer;
+    text-decoration:none;
+    display:inline-block;
+    border:1px solid var(--teal);
+    transition:box-shadow .2s ease, background .2s ease;
+  }
+  .btn-solid{background:var(--teal);color:#04211d}
+  .btn-solid:hover{box-shadow:0 0 26px var(--glow)}
+  .btn-ghost{color:var(--teal);background:transparent}
+  .btn-ghost:hover{background:rgba(28,232,207,.08)}
+
+  .frame{
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:10px;
+    background:var(--bg-panel);
+    box-shadow:0 0 60px rgba(28,232,207,.07);
+  }
+  .frame img{width:100%;display:block;border-radius:8px}
+  .frame-caption{
+    padding:10px 6px 2px;
+    font-size:.82rem;
+    color:var(--muted);
+  }
+
+  /* ---------- timeline structure ---------- */
+  main{position:relative;padding-bottom:40px}
+  .rail{
+    position:absolute;
+    left:11px;top:0;bottom:0;
+    width:1px;
+    background:linear-gradient(to bottom, transparent, var(--line) 6%, var(--line) 94%, transparent);
+  }
+  section{
+    position:relative;
+    padding:64px 0 64px 48px;
+  }
+  section::before{ /* keyframe diamond */
+    content:"";
+    position:absolute;
+    left:5px;top:82px;
+    width:13px;height:13px;
+    background:var(--teal);
+    transform:rotate(45deg);
+    box-shadow:0 0 16px var(--glow), 0 0 4px var(--teal);
+  }
+  h2{
+    font-family:'Chakra Petch',sans-serif;
+    font-weight:600;
+    font-size:1.7rem;
+    letter-spacing:.02em;
+    margin-bottom:8px;
+  }
+  .section-note{color:var(--muted);font-size:.95rem;max-width:56ch;margin-bottom:32px}
+
+  /* ---------- reels ---------- */
+  .reel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+  .reel{
+    border:1px dashed var(--line);
+    border-radius:12px;
+    background:linear-gradient(160deg, rgba(28,232,207,.05), transparent 55%);
+    padding:22px;
+    text-decoration:none;
+    display:block;
+    transition:border-color .2s ease;
+  }
+  .reel:hover{border-color:var(--teal)}
+  .reel-kind{
+    font-family:'Chakra Petch',sans-serif;
+    font-weight:600;
+    color:var(--text);
+    font-size:1.05rem;
+  }
+  .reel-desc{color:var(--muted);font-size:.88rem;margin-top:6px}
+  .reel-link{color:var(--teal);font-size:.85rem;margin-top:16px;display:block;word-break:break-all}
+
+  /* ---------- credits ---------- */
+  .credit{
+    display:grid;
+    grid-template-columns:minmax(0,2fr) minmax(0,3fr);
+    gap:8px 28px;
+    padding:20px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .credit:last-child{border-bottom:none}
+  .credit-name{
+    font-family:'Chakra Petch',sans-serif;
+    font-weight:600;
+    font-size:1.05rem;
+  }
+  .credit-name a{color:var(--text);text-decoration:none;border-bottom:1px solid var(--line)}
+  .credit-name a:hover{border-color:var(--teal)}
+  .credit-role{color:var(--muted);font-size:.92rem}
+
+  /* ---------- contact ---------- */
+  .contact-box{
+    border:1px solid var(--line);
+    border-radius:14px;
+    background:var(--bg-panel);
+    padding:34px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:24px;
+    flex-wrap:wrap;
+    box-shadow:0 0 50px rgba(28,232,207,.05);
+  }
+  .discord-tag{
+    font-family:'Chakra Petch',sans-serif;
+    font-weight:600;
+    font-size:1.5rem;
+    color:var(--teal);
+  }
+  .contact-sub{color:var(--muted);font-size:.92rem;margin-top:4px}
+  .copied{color:var(--teal-soft);font-size:.85rem;margin-left:10px;opacity:0;transition:opacity .3s ease}
+  .copied.show{opacity:1}
+
+  footer{
+    padding:36px 24px 48px;
+    text-align:center;
+    color:var(--muted);
+    font-size:.82rem;
+  }
+
+  :focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:4px}
+
+  @media (max-width:760px){
+    header{padding:64px 0 40px}
+    .hero{grid-template-columns:1fr;gap:36px}
+    section{padding-left:40px}
+    .credit{grid-template-columns:1fr}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .hero-copy,.hero-media{animation:none;opacity:1;transform:none}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+<div class="lights" aria-hidden="true"><span class="orb"></span></div>
+
+<div class="wrap">
+  <header>
+    <div class="hero">
+      <div class="hero-copy">
+        <h1 class="alias">Soul</h1>
+        <p class="tagline">Experienced all-around Roblox animator</p>
+        <div class="hero-actions">
+          <a class="btn btn-solid" href="#contact">Message me on Discord</a>
+          <a class="btn btn-ghost" href="#work">See my work</a>
+        </div>
+      </div>
+      <div class="hero-media">
+        <div class="frame">
+          <!-- REPLACE ME SOON: Discord attachment links expire after ~24h.
+               Download the GIF, upload it to this repo as showreel.gif,
+               then change the src below to just "showreel.gif". -->
+          <img
+            src="https://media.discordapp.net/attachments/1228339830472179714/1423562203382026300/Adobe_Express_-_2025-09-22_11-38-01_1_1_1.gif?ex=6a9c63dd&is=6a9b125d&hm=b377d0891dfbbfafbe944edaa0d0e38cac98b8c2894df43320b782890a17eb0d&=&width=1536&height=863"
+            alt="Animation preview by Soul"
+            onerror="this.closest('.frame').innerHTML='<div style=\'padding:70px 20px;text-align:center;color:#7fa09b;font-size:.9rem\'>Preview loading soon — new clip on the way.</div>'">
+          <p class="frame-caption">Recent animation work</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="rail" aria-hidden="true"></div>
+
+    <section id="work">
+      <h2>Reels &amp; clips</h2>
+      <p class="section-note">A cross-section of what I animate. Full reels are being re-rendered and will be linked here shortly.</p>
+      <div class="reel-grid">
+        <!-- PLACEHOLDER: swap href="#" for your YouTube/Streamable links -->
+        <a class="reel" href="#">
+          <p class="reel-kind">Combat &amp; weapons</p>
+          <p class="reel-desc">Melee combos, gun handling, hit reactions and stuns.</p>
+          <span class="reel-link">Reel link coming soon</span>
+        </a>
+        <a class="reel" href="#">
+          <p class="reel-kind">Emotes &amp; character</p>
+          <p class="reel-desc">Expressive emotes, idles, and personality-driven loops.</p>
+          <span class="reel-link">Reel link coming soon</span>
+        </a>
+        <a class="reel" href="#">
+          <p class="reel-kind">Cutscenes &amp; cinematics</p>
+          <p class="reel-desc">Story moments, camera-ready sequences, NPC acting.</p>
+          <span class="reel-link">Reel link coming soon</span>
+        </a>
+      </div>
+    </section>
+
+    <section id="credits">
+      <h2>Studios &amp; groups</h2>
+      <p class="section-note">Teams I've animated for. Game links and full credit details are being added.</p>
+      <!-- PLACEHOLDER: duplicate a .credit block per studio; put the game/group
+           link inside the <a>, and what you animated in .credit-role -->
+      <div class="credit">
+        <p class="credit-name"><a href="#">Studio name here</a></p>
+        <p class="credit-role">Role and animations delivered — e.g. full combat animation set.</p>
+      </div>
+      <div class="credit">
+        <p class="credit-name"><a href="#">Studio name here</a></p>
+        <p class="credit-role">Role and animations delivered — e.g. emotes and NPC cycles.</p>
+      </div>
+      <div class="credit">
+        <p class="credit-name"><a href="#">Studio name here</a></p>
+        <p class="credit-role">Role and animations delivered — e.g. cutscene animation.</p>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2>Commissions</h2>
+      <p class="section-note">Open for work. Rates shared in DMs — tell me about your project and what you need animated.</p>
+      <div class="contact-box">
+        <div>
+          <p class="discord-tag">@soul_break</p>
+          <p class="contact-sub">Discord is the fastest way to reach me.</p>
+        </div>
+        <div>
+          <button class="btn btn-solid" id="copyBtn" type="button">Copy Discord tag</button>
+          <span class="copied" id="copiedMsg">Copied</span>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<footer>
+  <p>Soul — Roblox animator. All animations shown are my own work.</p>
+</footer>
+
+<script>
+  document.getElementById('copyBtn').addEventListener('click', function(){
+    navigator.clipboard.writeText('@soul_break').then(function(){
+      var msg = document.getElementById('copiedMsg');
+      msg.classList.add('show');
+      setTimeout(function(){ msg.classList.remove('show'); }, 1800);
+    });
+  });
+</script>
+
+</body>
+</html>
