@@ -156,6 +156,15 @@
     transition:border-color .2s ease;
   }
   .reel:hover{border-color:var(--teal)}
+  .reel-media{
+    border:1px solid var(--line);
+    border-radius:8px;
+    overflow:hidden;
+    background:var(--bg);
+    margin-bottom:16px;
+    box-shadow:0 0 30px rgba(28,232,207,.06);
+  }
+  .reel-media img{width:100%;display:block}
   .reel-kind{
     font-family:'Chakra Petch',sans-serif;
     font-weight:600;
@@ -239,6 +248,7 @@
         <p class="tagline">Experienced all-around Roblox animator</p>
         <div class="hero-actions">
           <a class="btn btn-solid" href="#contact">Message me on Discord</a>
+          <a class="btn btn-solid" href="https://www.roblox.com/users/7032550039/profile">Friend me on Roblox</a>
           <a class="btn btn-ghost" href="#work">See my work</a>
         </div>
       </div>
@@ -258,23 +268,24 @@
     <div class="rail" aria-hidden="true"></div>
 
     <section id="work">
-      <h2>Reels &amp; clips</h2>
+      <h2>Clips of my work</h2>
       <p class="section-note">A cross-section of what I animate. Full reels are being re-rendered and will be linked here shortly.</p>
       <div class="reel-grid">
         <!-- PLACEHOLDER: swap href="#" for your YouTube/Streamable links -->
         <a class="reel" href="#">
-          <p class="reel-kind">Combat &amp; weapons</p>
-          <p class="reel-desc">Melee combos, gun handling, hit reactions and stuns.</p>
-          <span class="reel-link">Reel link coming soon</span>
+          <div class="reel-media">
+            <img src="https://raw.githubusercontent.com/soul-break55/soul-break55.github.io/refs/heads/main/combat_anims_soul.gif" alt="Combat and combo animations by Soul">
+          </div>
+          <p class="reel-kind">Combat &amp; combos</p>
         </a>
         <a class="reel" href="#">
-          <p class="reel-kind">Emotes &amp; character</p>
-          <p class="reel-desc">Expressive emotes, idles, and personality-driven loops.</p>
-          <span class="reel-link">Reel link coming soon</span>
+          <div class="reel-media">
+            <img src="https://github.com/soul-break55/soul-break55.github.io/blob/main/m4_gun_anims_soul.gif?raw=true" alt="M4 firearm animations by Soul">
+          </div>
+          <p class="reel-kind">Firearms &amp; Multi-Asset Rigs</p>
         </a>
         <a class="reel" href="#">
-          <p class="reel-kind">Cutscenes &amp; cinematics</p>
-          <p class="reel-desc">Story moments, camera-ready sequences, NPC acting.</p>
+          <p class="reel-kind">Placeholder</p>
           <span class="reel-link">Reel link coming soon</span>
         </a>
       </div>
